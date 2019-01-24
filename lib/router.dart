@@ -15,15 +15,26 @@ class MyRouteA extends StatelessWidget {
 
 class MyRouteB extends StatelessWidget{
 
+  final String titleName;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Router B"),
+        title: Text(this.titleName),
+        leading: new GestureDetector(),
       ),
-      body: MyHomePage(),
+      body: Center(
+        child: new RaisedButton(onPressed: (){
+          Navigator.pop(context, "form B");
+        },
+        child: Text("返回"),),
+      ),
     );
   }
+
+  MyRouteB({Key key,@required this.titleName}):super(key: key);
+
 
 }
 

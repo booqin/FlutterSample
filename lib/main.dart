@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'router.dart';
 
 void main() => runApp(MyApp());
@@ -24,41 +23,69 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(appName),
-        ),
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              new Padding(
-                padding: new EdgeInsets.all(8.0),
-                child: new RouteWidget("A", (context){
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => new MyRouteA())
-                  );
-                }),
-              ),
-              new Padding(
-                padding: new EdgeInsets.all(8.0),
-                child: new RouteWidget("B", (context){
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => new MyRouteB())
-                  );
-                }),
-              )
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){
-          },
-          tooltip: 'Increment',
-          child: Icon(Icons.add),
-        ),
-      )
+      home: new RouteHome(appName)
     );
   }
+}
+
+class RouteHome extends StatelessWidget{
+
+  final String appName;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(appName),
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            new Padding(
+              padding: new EdgeInsets.all(8.0),
+              child: new RouteWidget("Flutter_A", (context){
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) => new MyRouteA())
+                );
+              }),
+            ),
+            new Padding(
+              padding: new EdgeInsets.all(8.0),
+              child: new RouteWidget("Flutter_B", (context){
+                //响应式编程
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) => new MyRouteB(titleName:"Hello"))
+                ).then((value){
+                    Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("$value")));
+                });
+              }),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingBT()
+    );
+  }
+
+  RouteHome(this.appName);
+
+
+}
+
+class FloatingBT extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return FloatingActionButton(
+      onPressed: (){
+        Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("hello")));
+      },
+      tooltip: 'Increment',
+      child: Icon(Icons.add),
+    );
+  }
+
 }
 
 ///路由页面
