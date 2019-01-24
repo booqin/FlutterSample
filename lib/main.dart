@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'router.dart';
 
 void main() => runApp(MyApp());
 
+const platform = const MethodChannel("qts.flutter.io/route");
+
 class MyApp extends StatelessWidget {
+
   final appName = "路由";
 
   // This widget is the root of your application.
@@ -58,6 +62,27 @@ class RouteHome extends StatelessWidget{
                     new MaterialPageRoute(builder: (context) => new MyRouteB(titleName:"Hello"))
                 ).then((value){
                     Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("$value")));
+                });
+              }),
+            ),
+            new Padding(
+              padding: new EdgeInsets.all(8.0),
+              child: new RouteWidget("Native_A", (context){
+                //响应式编程
+                platform.invokeMethod("startActivity", <String, String>{
+                  'path':'/a'
+                });
+              }),
+            ),
+            new Padding(
+              padding: new EdgeInsets.all(8.0),
+              child: new RouteWidget("Native_B", (context){
+                //响应式编程
+                platform.invokeMethod("startActivity", <String, String>{
+                  'path':'/b',
+                  'param':'back'
+                }).then((result){
+                  Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("$result")));
                 });
               }),
             )
